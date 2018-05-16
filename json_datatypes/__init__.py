@@ -9,4 +9,5 @@ import json
 
 
 def parse_string(data_spec: type, json_: str):
+    """Parse a string according to the data_spec provided."""
     return data_spec(json_)
