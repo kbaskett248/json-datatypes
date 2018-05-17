@@ -8,43 +8,43 @@ __all__ = []
 from functools import partial
 import json
 from typing import (
-	Any,
-	TypeVar
+    Any,
+    TypeVar
 )
 
 T = TypeVar('T')
 
 
 def default_converter(type_: T, value: Any) -> T:
-	"""Generic validator that ensures value is of the specified type."""
-	if isinstance(value, bool):
-		if type_ is not bool:
-			raise ValueError()
-		else:
-			return value
-	if isinstance(value, type_):
-		return value
-	else:
-		raise ValueError()
+    """Generic validator that ensures value is of the specified type."""
+    if isinstance(value, bool):
+        if type_ is not bool:
+            raise ValueError()
+        else:
+            return value
+    if isinstance(value, type_):
+        return value
+    else:
+        raise ValueError()
 
 
 def float_converter(value: Any) -> float:
-	"""Validator that ensures value is a float."""
-	if isinstance(value, bool):
-		raise ValueError()
-	if isinstance(value, float):
-		return value
-	elif isinstance(value, int):
-		return float(value)
-	else:
-		raise ValueError()
+    """Validator that ensures value is a float."""
+    if isinstance(value, bool):
+        raise ValueError()
+    if isinstance(value, float):
+        return value
+    elif isinstance(value, int):
+        return float(value)
+    else:
+        raise ValueError()
 
 
 CONVERTERS = {
-	str: partial(default_converter, str),
-	int: partial(default_converter, int),
-	float: float_converter,
-	bool: partial(default_converter, bool)
+    str: partial(default_converter, str),
+    int: partial(default_converter, int),
+    float: float_converter,
+    bool: partial(default_converter, bool)
 }
 
 
