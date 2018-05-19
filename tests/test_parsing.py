@@ -2,7 +2,8 @@
 
 
 from typing import (
-    Any
+    Any,
+    Text
 )
 
 import pytest
@@ -23,6 +24,20 @@ from json_datatypes import parse_string
     (bool, 'false', False)
 ])
 def test_parse_basic_value(data_spec: type, json_: str, value: Any) -> None:
+    """Ensure a basic value is parsed according to the data_spec."""
+    result = parse_string(data_spec, json_)
+    assert isinstance(result, data_spec)
+    assert result == value
+
+
+@pytest.mark.parametrize('data_spec, json_, value', [
+    (Text, '"hello"', 'hello'),
+    (Text, '"5"', '5'),
+    (Text, '"1.5"', '1.5'),
+    (Text, '"true"', 'true'),
+    (Text, '"false"', 'false')
+])
+def test_parse_alias_value(data_spec: type, json_: str, value: Any) -> None:
     """Ensure a basic value is parsed according to the data_spec."""
     result = parse_string(data_spec, json_)
     assert isinstance(result, data_spec)
@@ -59,5 +74,7 @@ def test_parse_basic_value(data_spec: type, json_: str, value: Any) -> None:
 ])
 def test_throws_error_on_incompatible_basic_values(
         data_spec: type, json_: str) -> None:
+    """Ensure parse_string raises a value error if data_spec doesn't match
+    the json."""
     with pytest.raises(ValueError):
-        print(parse_string(data_spec, json_))
+        parse_string(data_spec, json_)

@@ -2,15 +2,21 @@
 
 __version__ = '0.1.0'
 __author__ = 'Kenny Baskett <kbaskett248@gmail.com>'
-__all__ = []
+__all__ = ['parse_string']
 
 
 from functools import partial
 import json
 from typing import (
     Any,
+    Text,
     TypeVar
 )
+
+from .utils import (
+    KeyDependentDefaultDict
+)
+
 
 T = TypeVar('T')
 
@@ -40,12 +46,10 @@ def float_converter(value: Any) -> float:
         raise ValueError()
 
 
-CONVERTERS = {
-    str: partial(default_converter, str),
-    int: partial(default_converter, int),
-    float: float_converter,
-    bool: partial(default_converter, bool)
-}
+CONVERTERS = KeyDependentDefaultDict(
+    lambda key: partial(default_converter, key),
+    {float: float_converter}
+)
 
 
 def parse_string(data_spec: type, json_: str):
